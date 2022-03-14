@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,13 +16,14 @@ using System.Windows.Shapes;
 namespace Application_pour_medecin
 {
     /// <summary>
-    /// Interaction logic for Connexion.xaml
+    /// Interaction logic for Creation.xaml
     /// </summary>
-    public partial class Connexion : Window
+    public partial class Creation : Window
     {
-        public Connexion()
+        public Creation()
         {
             InitializeComponent();
+            DataContext = new ViewModels.MainViewModel(this);
         }
     }
 }

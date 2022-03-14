@@ -34,16 +34,16 @@
         <Label Content="Ville" FontSize="22" VerticalAlignment="Center" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2"/>
         
         <Label Content="Dernier Diagnostique" FontSize="22" VerticalAlignment="Center" Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="2"/>
-        <TextBox x:Name="pNom" Text="Nom" FontSize="22" Foreground="Gray" Margin="10 5 10 5" VerticalContentAlignment="center" Grid.Row="1" Grid.Column="2"/>
-        <TextBox x:Name="pPrénom" Margin="10 5 10 5" Text="Prénom" FontSize="22" Foreground="Gray" VerticalContentAlignment="center" Grid.Row="1" Grid.Column="4"/>
-        <TextBox x:Name="pDateNaissance" Text="Date de Naissance" Foreground="Gray" FontSize="22" Margin="10 5 10 5" VerticalContentAlignment="center" Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="2"/>
+        <TextBox x:Name="pNom" Text="{Binding Patient.Nom}" FontSize="22" Foreground="Gray" Margin="10 5 10 5" VerticalContentAlignment="center" Grid.Row="1" Grid.Column="2"/>
+        <TextBox x:Name="pPrénom" Margin="10 5 10 5" Text="{Binding Patient.Prénom}" FontSize="22" Foreground="Gray" VerticalContentAlignment="center" Grid.Row="1" Grid.Column="4"/>
+        <TextBox x:Name="pDateNaissance" Text="{Binding Patient.Date}" Foreground="Gray" FontSize="22" Margin="10 5 10 5" VerticalContentAlignment="center" Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="2"/>
         <Label x:Name="pResulatat" Content="Presence \ Absence de maladie" Grid.Column="2" Grid.Row="6" Grid.ColumnSpan="3" FontSize="20" FontWeight="Bold" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
-        <ComboBox x:Name="pville" Grid.Column="3" Grid.Row="4" Margin="10 10 10 10" Grid.ColumnSpan="2"></ComboBox>
+        <ComboBox x:Name="pville" ItemsSource="{Binding VillesPatient}" SelectedItem="{Binding Patient.Ville, UpdateSourceTrigger=PropertyChanged}" Grid.Column="3" Grid.Row="4" Margin="10 10 10 10" Grid.ColumnSpan="2"></ComboBox>
         <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="3" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center">
-            <RadioButton x:Name="pHomme" GroupName="groupe1" Content="Un Homme" FontSize="22" VerticalContentAlignment="Center" Margin="10 10 20 10"/>
-            <RadioButton x:Name="pFemme" GroupName="groupe1" Content="Une Femme" VerticalContentAlignment="Center" FontSize="22"  Margin="10 10 20 10" />
+            <RadioButton x:Name="pHomme" IsChecked="{Binding Radio3IsCheck}" GroupName="groupe1" Content="Un Homme" FontSize="22" VerticalContentAlignment="Center" Margin="10 10 20 10"/>
+            <RadioButton x:Name="pFemme" IsChecked="{Binding Radio4IsCheck}" GroupName="groupe1" Content="Une Femme" VerticalContentAlignment="Center" FontSize="22"  Margin="10 10 20 10" />
         </StackPanel>
-        <Button x:Name="pCreer" Content="Créer" FontSize="22" Margin="20 5 20 5" Grid.Column="1" Grid.Row="8" Grid.ColumnSpan="2" VerticalAlignment="Center" />
-        <Button x:Name="pQuitter" Content="Quitter" FontSize="22" Margin="20 5 20 5" Grid.Column="3" Grid.Row="8" Grid.ColumnSpan="2" VerticalAlignment="Center" />
+        <Button x:Name="pCreer"  Command="{Binding AddDoctorCommand}" Content="Créer" FontSize="22" Margin="20 5 20 5" Grid.Column="1" Grid.Row="8" Grid.ColumnSpan="2" VerticalAlignment="Center" />
+        <Button x:Name="pQuitter" Command="{Binding QuitterCommand}" Content="Quitter" FontSize="22" Margin="20 5 20 5" Grid.Column="3" Grid.Row="8" Grid.ColumnSpan="2" VerticalAlignment="Center" />
     </Grid>
 </Window>

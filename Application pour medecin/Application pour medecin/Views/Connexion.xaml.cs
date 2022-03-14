@@ -15,13 +15,14 @@ using System.Windows.Shapes;
 namespace Application_pour_medecin
 {
     /// <summary>
-    /// Interaction logic for Bienvenue_Dr.xaml
+    /// Interaction logic for Connexion.xaml
     /// </summary>
-    public partial class Bienvenue_Dr : Window
+    public partial class Connexion : Window
     {
-        public Bienvenue_Dr()
+        public Connexion()
         {
             InitializeComponent();
+            DataContext = new ViewModels.MainViewModel(this);
         }
     }
 }

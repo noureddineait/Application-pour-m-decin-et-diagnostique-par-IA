@@ -37,18 +37,20 @@
                     <Label Content="Ville" FontSize="22" VerticalAlignment="Center" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2"/>
                     <Label Content="Date d'entré en fonction" FontSize="22" VerticalAlignment="Center" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2"/>
                     <Label Content="Adresse e-mail" FontSize="22" VerticalAlignment="Center" Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="2"/>
-                    <TextBox x:Name="iNom" Text="Nom" FontSize="22" Foreground="Gray" Margin="10 5 10 5" VerticalContentAlignment="center" Grid.Row="1" Grid.Column="2"/>
-                    <TextBox x:Name="iPrénom" Margin="10 5 10 5" Text="Prénom" FontSize="22" Foreground="Gray" VerticalContentAlignment="center" Grid.Row="1" Grid.Column="4"/>
-                    <TextBox x:Name="iDateNaissance" Text="Date de Naissance" Foreground="Gray" FontSize="22" Margin="10 5 10 5" VerticalContentAlignment="center" Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="2"/>
-                    <TextBox x:Name="iDateEntrée" Text="Date d'entrée en fonction" Foreground="Gray" FontSize="22"  Margin="10 5 10 5" VerticalContentAlignment="center" Grid.Row="5" Grid.Column="3" Grid.ColumnSpan="2"/>
-                    <TextBox x:Name="iAdresse" Text="Adresse e-mail" Foreground="Gray" FontSize="22" Margin="10 5 10 5" VerticalContentAlignment="center" Grid.Row="6" Grid.Column="3" Grid.ColumnSpan="2"/>
-                    <ComboBox x:Name="iville" Grid.Column="3" Grid.Row="4" Margin="10 5 10 5" Grid.ColumnSpan="2"></ComboBox>
+                    <Label x:Name="Test" Content="{ Binding Medecin.NomAfficher }" FontSize="22" VerticalAlignment="Center" Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="2"/>
+                    <TextBox  Text="{Binding Medecin.Nom, UpdateSourceTrigger=PropertyChanged}" FontSize="22" Foreground="Gray" Margin="10 5 10 5" VerticalContentAlignment="center" Grid.Row="1" Grid.Column="2" />
+                    <TextBox x:Name="iPrénom" Margin="10 5 10 5" Text="{Binding Medecin.Prénom,UpdateSourceTrigger=PropertyChanged}" FontSize="22" Foreground="Gray" VerticalContentAlignment="center" Grid.Row="1" Grid.Column="4"/>
+                    <TextBox x:Name="iDateNaissance" Text="{Binding Medecin.Date, UpdateSourceTrigger=PropertyChanged}" Foreground="Gray" FontSize="22" Margin="10 5 10 5" VerticalContentAlignment="center" Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="2" />
+                    <TextBox x:Name="iDateEntrée" Text="{Binding Medecin.DateEntrée, UpdateSourceTrigger=PropertyChanged}" Foreground="Gray" FontSize="22"  Margin="10 5 10 5" VerticalContentAlignment="center" Grid.Row="5" Grid.Column="3" Grid.ColumnSpan="2"/>
+                    <TextBox x:Name="iAdresse" Text="{Binding Medecin.Mail, UpdateSourceTrigger=PropertyChanged}" Foreground="Gray" FontSize="22" Margin="10 5 10 5" VerticalContentAlignment="center" Grid.Row="6" Grid.Column="3" Grid.ColumnSpan="2"/>
+
+                    <ComboBox x:Name="iville" ItemsSource="{Binding Villes}" SelectedItem="{Binding Medecin.Ville, UpdateSourceTrigger=PropertyChanged}" Grid.Column="3" Grid.Row="4" Margin="10 5 10 5" Grid.ColumnSpan="2"></ComboBox>
                     <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="3" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center">
-                        <RadioButton x:Name="iHomme" GroupName="groupe1" Content="Un Homme" FontSize="22" VerticalContentAlignment="Center" Margin="10 10 20 10"/>
-                        <RadioButton x:Name="iFemme" GroupName="groupe1" Content="Une Femme" VerticalContentAlignment="Center" FontSize="22"  Margin="10 10 20 10" />
+                        <RadioButton x:Name="iHomme" IsChecked="{Binding Radio1IsCheck}" GroupName="groupe1" Content="Un Homme" FontSize="22" VerticalContentAlignment="Center" Margin="10 10 20 10"/>
+                        <RadioButton x:Name="iFemme" IsChecked="{Binding Radio2IsCheck}" GroupName="groupe1" Content="Une Femme" VerticalContentAlignment="Center" FontSize="22"  Margin="10 10 20 10" />
                     </StackPanel>
-                    <Button x:Name="iCreer" Content="Créer" FontSize="22" Margin="20 5 20 5" Grid.Column="1" Grid.Row="8" Grid.ColumnSpan="2" VerticalAlignment="Center" />
-                    <Button x:Name="iQuitter" Content="Quitter" FontSize="22" Margin="20 5 20 5" Grid.Column="3" Grid.Row="8" Grid.ColumnSpan="2" VerticalAlignment="Center" />
+                    <Button x:Name="iCreer" IsEnabled="{Binding CanEdit}" Command="{Binding GreetingCommand}" Content="Modifier" FontSize="22" Margin="20 5 20 5" Grid.Column="1" Grid.Row="8" Grid.ColumnSpan="2" VerticalAlignment="Center" />
+                    <Button x:Name="iQuitter" IsEnabled="{Binding CanClose}" Command="{Binding Quitter}" Content="Annuler" FontSize="22" Margin="20 5 20 5" Grid.Column="3" Grid.Row="8" Grid.ColumnSpan="2" VerticalAlignment="Center" />
                 </Grid>
             </TabItem>
             <TabItem Header="Diagnostique">
@@ -68,9 +70,22 @@
                         <ColumnDefinition Width="40*"/>
                         <ColumnDefinition Width="10*"/>
                     </Grid.ColumnDefinitions>
-                    <ComboBox x:Name="dville" Grid.Column="1" Grid.Row="1" Margin="10 10 10 10" ></ComboBox>
+                    <ComboBox x:Name="dville" SelectedItem="{ Binding SelectedPatient, UpdateSourceTrigger=PropertyChanged }" ItemsSource="{ Binding Patients }" Grid.Column="1" Grid.Row="1" Margin="10 10 10 10" >
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock>
+                                    <TextBlock.Text>
+                                        <MultiBinding StringFormat="{}{0} {1}">
+                                            <Binding Path="Nom"/>
+                                            <Binding Path="Prénom"/>
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
                     <Button x:Name="dInformations" Content="Information" FontSize="22" Margin="20 10 20 10" Grid.Column="2" Grid.Row="1"  VerticalContentAlignment="Center" />
-                    <Button x:Name="dAjout" Content="Ajouter un patient" FontSize="22" Margin="20 10 20 10" Grid.Column="3" Grid.Row="1" Grid.ColumnSpan="2" VerticalContentAlignment="Center" />
+                    <Button x:Name="dAjout" Command="{Binding OpenAjoutPatientCommand}" Content="Ajouter un patient" FontSize="22" Margin="20 10 20 10" Grid.Column="3" Grid.Row="1" Grid.ColumnSpan="2" VerticalContentAlignment="Center" />
                     <GroupBox Header="Paramètres" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4"  FontSize="18">
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -93,10 +108,10 @@
                             <Label Content="Thalassémie" FontSize="20" VerticalContentAlignment="Center" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2"/>
                             <Label Content="Dépression ST induite par l'exercice par rapport au repos" FontSize="20" VerticalContentAlignment="Center" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3"/>
                             <Label Content="Nombre de gros vaisseaux colorés par fluoroscopie" FontSize="20" VerticalContentAlignment="Center" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3"/>
-                            <ComboBox x:Name="dDouleur" Grid.Column="3" Grid.Row="1" Margin="10 5 10 5" Grid.ColumnSpan="2"></ComboBox>
-                            <ComboBox x:Name="dThalassémie" Grid.Column="3" Grid.Row="2" Margin="10 5 10 5" Grid.ColumnSpan="2"></ComboBox>
-                            <TextBox x:Name="dDepression" Text="Number" Foreground="Gray" Grid.Row="3" Grid.Column="4" Margin="10 5 10 5" VerticalContentAlignment="Center"/>
-                            <TextBox x:Name="dVaisseaux" Text="Number" Foreground="Gray" Grid.Row="4" Grid.Column="4" Margin="10 5 10 5" VerticalContentAlignment="Center"/>
+                            <ComboBox x:Name="dDouleur" ItemsSource="{Binding DouleursThoracique}" SelectedItem="{Binding Diagnostic.cp, UpdateSourceTrigger=PropertyChanged}" Grid.Column="3" Grid.Row="1" Margin="10 5 10 5" Grid.ColumnSpan="2"></ComboBox>
+                            <ComboBox x:Name="dThalassémie" ItemsSource="{Binding DouleursThalassemie}" SelectedItem="{Binding Diagnostic.thal, UpdateSourceTrigger=PropertyChanged}" Grid.Column="3" Grid.Row="2" Margin="10 5 10 5" Grid.ColumnSpan="2"></ComboBox>
+                            <TextBox x:Name="dDepression" Text="{Binding Diagnostic.oldpeak}" Foreground="Gray" Grid.Row="3" Grid.Column="4" Margin="10 5 10 5" VerticalContentAlignment="Center"/>
+                            <TextBox x:Name="dVaisseaux" Text="{Binding Diagnostic.ca}" Foreground="Gray" Grid.Row="4" Grid.Column="4" Margin="10 5 10 5" VerticalContentAlignment="Center"/>
 
                         </Grid>
                     </GroupBox>
@@ -139,8 +154,8 @@
                             </Grid.RowDefinitions>
                             <Label Content="Données de référence" Grid.Row="1" Grid.Column="1" VerticalContentAlignment="Center" FontSize="20" Grid.ColumnSpan="2"/>
                             <Label Content="Données d'évaluation" Grid.Row="2" Grid.Column="1" VerticalContentAlignment="Center" FontSize="20" Grid.ColumnSpan="2"/>
-                            <Button x:Name="cDonneesReference" Content="Parcourir..." FontSize="22" Margin="20 10 20 10" Grid.Column="3" Grid.Row="1"  VerticalContentAlignment="Center" />
-                            <Button x:Name="cDonneesEvaluation" Content="Parcourir..." FontSize="22" Margin="20 10 20 10" Grid.Column="3" Grid.Row="2"  VerticalContentAlignment="Center" />
+                            <Button x:Name="cDonneesReference" Command="{Binding OpenTrainCommand}" Content="Parcourir..." FontSize="22" Margin="20 10 20 10" Grid.Column="3" Grid.Row="1"  VerticalContentAlignment="Center" />
+                            <Button x:Name="cDonneesEvaluation" Command="{Binding OpenTestCommand}" Content="Parcourir..." FontSize="22" Margin="20 10 20 10" Grid.Column="3" Grid.Row="2"  VerticalContentAlignment="Center" />
 
 
                         </Grid>
@@ -162,13 +177,13 @@
                             </Grid.RowDefinitions>
                             <Label Content="Paramètre k" Grid.Row="1" Grid.Column="1" VerticalContentAlignment="Center" FontSize="20" Grid.ColumnSpan="2"/>
                             <Label Content="Type de distance" Grid.Row="2" Grid.Column="1" VerticalContentAlignment="Center" FontSize="20" Grid.ColumnSpan="2"/>
-                            <TextBox x:Name="cParametreK" Text="Number" Foreground="Gray" Grid.Row="1" Grid.Column="3" Margin="20 10 20 10" VerticalContentAlignment="Center" />
-                            <ComboBox x:Name="cDistance" Grid.Column="3" Grid.Row="2" Margin="20 10 20 10" VerticalContentAlignment="Center"></ComboBox>
+                            <TextBox x:Name="cParametreK" Text="{Binding ParametreK}" Foreground="Gray" Grid.Row="1" Grid.Column="3" Margin="20 10 20 10" VerticalContentAlignment="Center" />
+                            <ComboBox x:Name="cDistance" ItemsSource="{Binding Distances}" SelectedItem="{Binding SelectedDistance, UpdateSourceTrigger=PropertyChanged}" Grid.Column="3" Grid.Row="2" Margin="20 10 20 10" VerticalContentAlignment="Center"></ComboBox>
 
                         </Grid>
                     </GroupBox>
-                    <Button x:Name="cEvaluer" Content="Évaluer" FontSize="22" Margin="20 15 20 15" Grid.Column="1" Grid.Row="3"  VerticalContentAlignment="Center" />
-                    <Label x:Name="cResulatat" Content="Taux de reconnaissance : ...%" Grid.Column="2" Grid.Row="3" Grid.ColumnSpan="3" FontSize="20" FontWeight="Bold" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+                    <Button x:Name="cEvaluer" Command="{Binding EvaluerCommand}" Content="Évaluer" FontSize="22" Margin="20 15 20 15" Grid.Column="1" Grid.Row="3"  VerticalContentAlignment="Center" />
+                    <Label x:Name="cResulatat" Content="{Binding AccuracyString, UpdateSourceTrigger=PropertyChanged}" Grid.Column="2" Grid.Row="3" Grid.ColumnSpan="3" FontSize="20" FontWeight="Bold" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
 
                 </Grid>
             </TabItem>
